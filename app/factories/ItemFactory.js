@@ -1,9 +1,9 @@
 "use strict";
 
 app.factory("ItemStorage", ($http, FBCreds) =>  {
-    let items = [];
 
     let getItemList = () => {
+        let items = [];
         return new Promise( (resolve, reject) => {
            $http.get(`${FBCreds.URL}/items.json`)
            .success( (itemObject) => {
@@ -20,9 +20,21 @@ app.factory("ItemStorage", ($http, FBCreds) =>  {
         });
     };
 
+    let getSingleItem = (itemId) => {
+        return new Promise( (resolve, reject) => {
+            $http.get(`${FBCreds.URL}/items/${itemId}.json`)
+            .success( (itemObject) => {
+                resolve(itemObject);
+            })
+            .error( (error) => {
+                reject(error);
+            });
+        });
+    };
+
     let postNewItem = (newTask) => {
    		//items.push(newTask);
     };
 
-    return {getItemList, postNewItem};
+    return {getItemList, postNewItem, getSingleItem};
 });
